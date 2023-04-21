@@ -36,13 +36,19 @@ namespace P1test
 		public float PlayerVY2 = 0f;
 		public float PlayerPos = 0f;
 		public bool Wasped = false;
+        // for the shield, code is in PreHurt() and PostUpdate()
+        public bool ShieldActive = false; //Activated when accesory equipped.
+        public double ShieldMaxHP = 0; //Shield health max, use for max in UI
+        public double ShieldHP = 0; //Shield "health" counter, use for current in UI
+		public double ShieldRegen = 0;
+		public int ShieldCooldownMax = 0; //Total cooldown, cooldown until shield starts to regen
+        public int ShieldCooldown = 0; //Cooldown counter, 0 is shield active
+		public float ShieldResist = 0f; //effectiveness of shield, 0f is all damage through, 0.5f is half damage through, 1f is all damage goes to shield hp
+		//sum of damage to health and damage to shield is incoming damage
+		//to change damage to health, use damage reduction when shield active
+		// might need another var for shield active damage reduction
 
-		public double ShHP = 300; //Shield "health"
-		public int ShCooldown = 1; //Cooldown
-		public bool SHLDon = false; //Activated when accesory equipped.
-		  public bool SHLDon2 = false; //An additional check for shield on, mostly for debugging.
-
-		public override void ResetEffects()
+        public override void ResetEffects()
 		{
 			//QuantProj = false;
 			Slagged = false;
@@ -66,14 +72,55 @@ namespace P1test
 			PlayerPos = 0f;
 			Wasped = false;
 
-			SHLDon = false;
-			SHLDon2 = false;
+            ShieldActive = false;
+            ShieldMaxHP = 0;
+			ShieldCooldownMax = 0;
+            ShieldResist = 0f;
+            ShieldRegen = 0;
+        }
 
-		}
 
-	
+        public override bool PreHurt(bool pvp, bool quiet, ref int damage, ref int hitDirection, ref bool crit, ref bool customDamage, ref bool playSound, ref bool genGore, ref PlayerDeathReason damageSource, ref int cooldownCounter)
+        {
+            //int DONTCHANGTHISDAM = damage; //irrelevant backup?
+            if (ShieldActive == true) //more notes with variable initialization
+            {
+                int damageToShield = damage;
+                if (ShieldHP > 0)//&& ShieldCooldown <= 0)
+				{
+					damageToShield = (int)(damage * ShieldResist);
+					ShieldHP -= damageToShield;
+					damage -= damageToShield;
+					ShieldCooldown = ShieldCooldownMax;
+					if (ShieldHP <= 0) { ShieldHP = 0; }
+				}
+				else
+				{
+					ShieldCooldown = ShieldCooldownMax;
+				}
 
-		public override void PostHurt(bool pvp, bool quiet, double damage, int hitDirection, bool crit, int cooldownCounter)
+				return true;
+            }
+            //if (SHLDon == true & ShCooldown < 2 & SHLDon2 == true)
+            //{
+
+            //	if (ShHP >= 3)
+            //	{
+            //		damage = TshDam / 4;
+            //		ShHP = ShHP - (TshDam / 2);
+            //	}
+
+            //}
+            //if (ShHP < 3)
+            //{
+            //	ShCooldown = 600;
+            //	SHLDon2 = false;
+            //	damage = TshDam;
+            //}
+            return true;
+        }
+
+        public override void PostHurt(bool pvp, bool quiet, double damage, int hitDirection, bool crit, int cooldownCounter)
 		{
 			if (MiniPort == true)
 			{
@@ -98,32 +145,7 @@ namespace P1test
 				Vector2 newVelocity = Player.velocity;
 				newVelocity = newVelocity * 0.1f;
 				Player.velocity = newVelocity;
-			}
-			
-			
-		}
-
-		public override bool PreHurt(bool pvp, bool quiet, ref int damage, ref int hitDirection, ref bool crit, ref bool customDamage, ref bool playSound, ref bool genGore, ref PlayerDeathReason damageSource, ref int cooldownCounter)
-        {
-            int DONTCHANGTHISDAM = damage;
-			int TshDam = damage;
-			if (SHLDon == true & ShCooldown < 2 & SHLDon2 == true)
-            {
-				
-				if (ShHP > 2)
-				{
-					damage = TshDam / 4;
-					ShHP = ShHP - (TshDam / 2);
-				}
-     
-			}
-			if (ShHP < 3)
-			{
-				ShCooldown = 600;
-				SHLDon2 = false;
-				damage = TshDam;
-			}
-            return true;
+			}	
 		}
 
 		public override void OnHitNPC(Item item, NPC target, int damage, float knockBack, bool crit)
@@ -184,11 +206,6 @@ namespace P1test
 			
 		}
 
-
-
-
-
-
 		public override bool Shoot(Item item, EntitySource_ItemUse_WithAmmo source, Vector2 position, Vector2 velocity, int type, int damage, float knockback)
 		{
 
@@ -205,6 +222,7 @@ namespace P1test
 			}
             else { return true; }
 		}
+
 		public override void UpdateBadLifeRegen()
         {
 			if(SolBurn == true)
@@ -263,28 +281,38 @@ namespace P1test
 
 		}
 		//public override void OnShoot()
+
 		public override void PostUpdate()
         {
 			Scarfe = false;
 			PlaySpeedX = Player.velocity.X;
 			PlaySpeedY = Player.velocity.Y;
 
-				if (ShCooldown >= 1)
-				{
-					ShCooldown = ShCooldown - 1;
-					ShHP = 301; //needs changing so UI is not bugged
-					SHLDon2 = false;
-				}
-			
-				else
-				{
-					if (ShHP < 301)
-					{
-						ShHP = ShHP + 1;
-					}
+			if (ShieldCooldown > 0)
+			{
+				ShieldCooldown--;
+			}
+			if (ShieldCooldown <= 0 && ShieldHP < ShieldMaxHP)
+			{
+				ShieldHP += ShieldRegen;
+			}
 
-					SHLDon2 = true;
-				}
+				//if (ShCooldown >= 1)
+				//{
+				//	ShCooldown = ShCooldown - 1;
+				//	ShHP = 300; //needs changing so UI is not bugged
+				//	SHLDon2 = false;
+				//}
+			
+				//else
+				//{
+				//	if (ShHP < 300)
+				//	{
+				//		ShHP = ShHP + 1;
+				//	}
+
+				//	SHLDon2 = true;
+				//}
 
 		}
 	}
