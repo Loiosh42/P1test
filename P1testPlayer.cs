@@ -110,14 +110,14 @@ namespace P1test
 			if (SHLDon == true & ShCooldown < 2 & SHLDon2 == true)
             {
 				
-				if (ShHP > 2)
+				if (ShHP >= 3)
 				{
 					damage = TshDam / 4;
 					ShHP = ShHP - (TshDam / 2);
 				}
      
 			}
-			if (ShHP < 3)
+			 if (ShHP < 3)
 			{
 				ShCooldown = 600;
 				SHLDon2 = false;
@@ -272,13 +272,13 @@ namespace P1test
 				if (ShCooldown >= 1)
 				{
 					ShCooldown = ShCooldown - 1;
-					ShHP = 301; //needs changing so UI is not bugged
+					ShHP = 300; //needs changing so UI is not bugged
 					SHLDon2 = false;
 				}
 			
 				else
 				{
-					if (ShHP < 301)
+					if (ShHP < 300)
 					{
 						ShHP = ShHP + 1;
 					}
