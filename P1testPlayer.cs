@@ -40,7 +40,7 @@ namespace P1test
 		public double ShHP = 300; //Shield "health"
 		public int ShCooldown = 1; //Cooldown
 		public bool SHLDon = false; //Activated when accesory equipped.
-		public bool SHLDon2 = false; //An additional check for shield on, mostly for debugging.
+		  public bool SHLDon2 = false; //An additional check for shield on, mostly for debugging.
 
 		public override void ResetEffects()
 		{
@@ -119,11 +119,11 @@ namespace P1test
 			}
 			if (ShHP < 3)
 			{
-				ShCooldown = 1200;
+				ShCooldown = 600;
 				SHLDon2 = false;
 				damage = TshDam;
 			}
-			return true;
+            return true;
 		}
 
 		public override void OnHitNPC(Item item, NPC target, int damage, float knockBack, bool crit)
