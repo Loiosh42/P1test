@@ -21,7 +21,7 @@ namespace P1test.Items.Acsessories
 			Item.width = 26;
 			Item.height = 32;
 			DisplayName.SetDefault("Energy Shield");
-			Tooltip.SetDefault("...");
+			Tooltip.SetDefault("Bwahahah!!");
 	
 		}
 		public override void SetDefaults() {
