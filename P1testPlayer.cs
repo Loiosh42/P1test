@@ -86,12 +86,13 @@ namespace P1test
             if (ShieldActive == true) //more notes with variable initialization
             {
                 int damageToShield = damage;
-                if (ShieldHP > 0 )//&& ShieldCooldown <= 0)
+                if (ShieldHP > 0)//&& ShieldCooldown <= 0)
 				{
 					damageToShield = (int)(damage * ShieldResist);
 					ShieldHP -= damageToShield;
 					damage -= damageToShield;
 					ShieldCooldown = ShieldCooldownMax;
+					if (ShieldHP <= 0) { ShieldHP = 0; }
 				}
 				else
 				{
