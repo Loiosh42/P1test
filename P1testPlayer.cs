@@ -87,18 +87,22 @@ namespace P1test
             {
                 int damageToShield = damage;
                 if (ShieldHP > 0)//&& ShieldCooldown <= 0)
+                {
+                    damageToShield = (int)(damage * ShieldResist);
+                    ShieldHP -= damageToShield;
+                    damage -= damageToShield;
+                    ShieldCooldown = ShieldCooldownMax;
+                    if (ShieldHP <= 0) { ShieldHP = 0; }
+                }
+                else
+                {
+                    ShieldCooldown = ShieldCooldownMax;
+                }
+				for (int i = 0; i <= 6; i++)
 				{
-					damageToShield = (int)(damage * ShieldResist);
-					ShieldHP -= damageToShield;
-					damage -= damageToShield;
-					ShieldCooldown = ShieldCooldownMax;
-					if (ShieldHP <= 0) { ShieldHP = 0; }
+					//Vector2 Playerpos2 = new Vector2(PlayerPos.X, PlayerPos.Y);
+					Dust.NewDust(Player.position, 40, 40, 135, 0f, 0f, 100, default(Color), 2f);
 				}
-				else
-				{
-					ShieldCooldown = ShieldCooldownMax;
-				}
-
 				return true;
             }
             //if (SHLDon == true & ShCooldown < 2 & SHLDon2 == true)
@@ -119,6 +123,8 @@ namespace P1test
             //}
             return true;
         }
+
+
 
         public override void PostHurt(bool pvp, bool quiet, double damage, int hitDirection, bool crit, int cooldownCounter)
 		{
