@@ -37,8 +37,8 @@ namespace P1test.Items.Acsessories
             hideVisual = true;
 			p.GetModPlayer<P1testPlayer>().ShieldActive = true; // for making more or adjusting shield items, adjust and use this stuff, code is in P1testPlayer
 			p.GetModPlayer<P1testPlayer>().ShieldCooldownMax = 300; // int
-			p.GetModPlayer<P1testPlayer>().ShieldMaxHP = 100; // double
-			p.GetModPlayer<P1testPlayer>().ShieldResist = 0.5f; // float
+			p.GetModPlayer<P1testPlayer>().ShieldMaxHP = 600; // double
+			p.GetModPlayer<P1testPlayer>().ShieldResist = 0.75f; // float
 			p.GetModPlayer<P1testPlayer>().ShieldRegen = 1; // double
 
 		}

@@ -87,19 +87,26 @@ namespace P1test
             {
                 int damageToShield = damage;
                 if (ShieldHP > 0)//&& ShieldCooldown <= 0)
-				{
-					damageToShield = (int)(damage * ShieldResist);
-					ShieldHP -= damageToShield;
-					damage -= damageToShield;
-					ShieldCooldown = ShieldCooldownMax;
-					if (ShieldHP <= 0) { ShieldHP = 0; }
-				}
-				else
-				{
-					ShieldCooldown = ShieldCooldownMax;
-				}
+                {
+                    damageToShield = (int)(damage * ShieldResist);
+                    ShieldHP -= damageToShield;
+                    damage -= damageToShield;
+                    ShieldCooldown = ShieldCooldownMax;
+                    if (ShieldHP <= 0) { ShieldHP = 0; }
 
-				return true;
+                    for (int i = 0; i <= 20; i++)
+					{
+						//Vector2 Playerpos2 = new Vector2(PlayerPos.X, PlayerPos.Y);
+						int num1 = Dust.NewDust(Player.position, 50, 50, 135, 0f, 0f, 100, default(Color), 2f);
+						Main.dust[num1].noGravity = true;
+					}
+				}
+                else
+                {
+                    ShieldCooldown = ShieldCooldownMax;
+                }
+
+                return true;
             }
             //if (SHLDon == true & ShCooldown < 2 & SHLDon2 == true)
             //{
@@ -119,6 +126,8 @@ namespace P1test
             //}
             return true;
         }
+
+
 
         public override void PostHurt(bool pvp, bool quiet, double damage, int hitDirection, bool crit, int cooldownCounter)
 		{
@@ -165,42 +174,16 @@ namespace P1test
 				if (Main.dayTime)
 				{
 					target.AddBuff(Mod.Find<ModBuff>("SolarConflagration").Type, 400);
-					//target.AddBuff(BuffID.OnFire, 300, true);
-
-					//target.AddBuff(BuffID.ShadowFlame, 300, false);
-					//target.AddBuff(BuffID.Bleeding, 300, false);
-					//target.AddBuff(BuffID.CursedInferno, 300, false);
-					//target.AddBuff(BuffID.ShadowFlame, 300, false);
 					target.AddBuff(BuffID.Ichor, 600);
-					//target.AddBuff(BuffID.Poisoned, 300, false);
-					//target.AddBuff(BuffID.Burning, 300, false);
-					//target.AddBuff(20, 300);
-					//target.AddBuff(24, 300);
-					//target.AddBuff(30, 300);
-					//target.AddBuff(39, 300);
-					//target.AddBuff(69, 300);
-					//target.AddBuff(70, 300);
-					//target.AddBuff(153, 300);
-					//target.AddBuff(323, 300);
 				}
 				else
 				{
 					target.AddBuff(Mod.Find<ModBuff>("VoidBurn").Type, 400);
 					target.AddBuff(BuffID.Suffocation, 300, false);
-					//target.AddBuff(BuffID.Bleeding, 300, false);
-					//target.AddBuff(BuffID.Poisoned, 300, false);
 					target.AddBuff(31, 600);
 					target.AddBuff(32, 600);
 					target.AddBuff(160, 600);
 					target.AddBuff(BuffID.Frostburn, 300, false);
-					//target.AddBuff(20, 300);
-					//target.AddBuff(30, 300);
-					//target.AddBuff(44, 300);
-					//target.AddBuff(47, 300);
-					//target.AddBuff(68, 300);
-					//target.AddBuff(70, 300);
-					//target.AddBuff(144, 300);
-					//target.AddBuff(324, 300);
 				}
 			}
 			
@@ -297,22 +280,6 @@ namespace P1test
 				ShieldHP += ShieldRegen;
 			}
 
-				//if (ShCooldown >= 1)
-				//{
-				//	ShCooldown = ShCooldown - 1;
-				//	ShHP = 300; //needs changing so UI is not bugged
-				//	SHLDon2 = false;
-				//}
-			
-				//else
-				//{
-				//	if (ShHP < 300)
-				//	{
-				//		ShHP = ShHP + 1;
-				//	}
-
-				//	SHLDon2 = true;
-				//}
 
 		}
 	}
