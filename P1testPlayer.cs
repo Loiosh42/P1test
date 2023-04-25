@@ -93,17 +93,20 @@ namespace P1test
                     damage -= damageToShield;
                     ShieldCooldown = ShieldCooldownMax;
                     if (ShieldHP <= 0) { ShieldHP = 0; }
-                }
+
+                    for (int i = 0; i <= 20; i++)
+					{
+						//Vector2 Playerpos2 = new Vector2(PlayerPos.X, PlayerPos.Y);
+						int num1 = Dust.NewDust(Player.position, 50, 50, 135, 0f, 0f, 100, default(Color), 2f);
+						Main.dust[num1].noGravity = true;
+					}
+				}
                 else
                 {
                     ShieldCooldown = ShieldCooldownMax;
                 }
-				for (int i = 0; i <= 6; i++)
-				{
-					//Vector2 Playerpos2 = new Vector2(PlayerPos.X, PlayerPos.Y);
-					Dust.NewDust(Player.position, 40, 40, 135, 0f, 0f, 100, default(Color), 2f);
-				}
-				return true;
+
+                return true;
             }
             //if (SHLDon == true & ShCooldown < 2 & SHLDon2 == true)
             //{
