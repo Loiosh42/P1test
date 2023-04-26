@@ -85,7 +85,7 @@ namespace P1test
             //int DONTCHANGTHISDAM = damage; //irrelevant backup?
             if (ShieldActive == true) //more notes with variable initialization
             {
-                int damageToShield = damage;
+                int damageToShield;
                 if (ShieldHP > 0)//&& ShieldCooldown <= 0)
                 {
                     damageToShield = (int)(damage * ShieldResist);
@@ -97,7 +97,7 @@ namespace P1test
                     for (int i = 0; i <= 20; i++)
 					{
 						//Vector2 Playerpos2 = new Vector2(PlayerPos.X, PlayerPos.Y);
-						int num1 = Dust.NewDust(Player.position, 50, 50, 135, 0f, 0f, 100, default(Color), 2f);
+						int num1 = Dust.NewDust(Player.position, 50, 50, DustID.IceTorch, 0f, 0f, 100, default(Color), 2f);
 						Main.dust[num1].noGravity = true;
 					}
 				}
